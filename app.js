@@ -41,7 +41,6 @@ for (let i = 0; i < neurons.length - 1; i++) {
     scene.add(connection);
 }
 
-
 // Position the camera so we can see the cube
 camera.position.z = 5;
 
@@ -58,16 +57,21 @@ window.addEventListener('mousemove', (event) => {
 function animate() {
     requestAnimationFrame(animate);
 
-    // Raycasting to detect hover
-    raycaster.update();
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Calculate objects intersecting the picking ray
     const intersects = raycaster.intersectObjects(neurons);
-    neurons.forEach(neuron => neuron.material.color.set(0x0000ff)); // Reset color
+
+    // Reset color of all neurons
+    neurons.forEach(neuron => neuron.material.color.set(0x0000ff));
+
+    // Highlight intersected neurons
     intersects.forEach(intersect => {
-        intersect.object.material.color.set(0xffff00); // Highlight hovered neuron
+        intersect.object.material.color.set(0xffff00);
     });
 
     renderer.render(scene, camera);
 }
-
 
 animate();
